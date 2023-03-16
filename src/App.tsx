@@ -6,7 +6,6 @@ import styles from './App.module.css';
 
 import Wilder, { IWilderProps } from './components/Wilder';
 import AddWilderForm from './components/AddWilderForm';
-import { ISkillProps } from './components/Skill';
 
 interface ISkillFromAPI {
   id: number;
@@ -25,39 +24,30 @@ interface IWilderFromAPI {
   name: string;
 }
 
-const formatWildersFromApi = (wilders: IWilderFromAPI[]): IWilderProps[] =>
-  wilders.map((wilder) => {
-    return {
-      apiSkills: [],
-      city: wilder.city,
-      id: wilder.id,
-      name: wilder.name,
-      skills: wilder.grades.map((grade) => {
-        return {id: grade.skill.id, name: grade.skill.name, rating: grade.rating};
-    }),
-  };
-});
-
 function App() {
   const [wilders, setWilders] = useState<IWilderProps[]>([]);
-  const [apiSkills, setSkills] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchWilders = async () => {
       const apiWilders = await axios.get('http://localhost:3030/api/wilder');
-      setWilders(formatWildersFromApi(apiWilders.data));
 
-      const apiSkills = await axios.get('http://localhost:3030/api/skill');
-      setSkills(apiSkills.data);
-      console.log('API SKILLS. = ', apiSkills.data);
+      // Mapping the data from the API to match the expected display on the front-side
+      setWilders(
+        apiWilders.data.map((wilder: IWilderFromAPI): IWilderProps => ({
+          city: wilder.city,
+          id: wilder.id,
+          name: wilder.name,
+          skills: wilder.grades.map((grade) => ({
+            id: grade.skill.id,
+            name: grade.skill.name,
+            rating: grade.rating
+          })),
+        }))
+      );  
     };
 
-    fetchData();
+    fetchWilders();
   }, []);
-
-  console.log('setSkills = ', apiSkills);
-
-  
 
   return(
     <div >
@@ -84,7 +74,6 @@ function App() {
                     key={wilder.id}
                     name={wilder.name}
                     skills={wilder.skills}
-                    apiSkills={apiSkills}
                     />
         })}
       </section>
