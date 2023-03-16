@@ -6,7 +6,6 @@ import styles from './App.module.css';
 
 import Wilder, { IWilderProps } from './components/Wilder';
 import AddWilderForm from './components/AddWilderForm';
-import { ISkillProps } from './components/Skill';
 
 interface ISkillFromAPI {
   id: number;
@@ -28,7 +27,6 @@ interface IWilderFromAPI {
 const formatWildersFromApi = (wilders: IWilderFromAPI[]): IWilderProps[] =>
   wilders.map((wilder) => {
     return {
-      apiSkills: [],
       city: wilder.city,
       id: wilder.id,
       name: wilder.name,
@@ -84,7 +82,6 @@ function App() {
                     key={wilder.id}
                     name={wilder.name}
                     skills={wilder.skills}
-                    apiSkills={apiSkills}
                     />
         })}
       </section>

@@ -1,16 +1,28 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IGradeProps from "./Grade";
 import { ISkillProps } from "./Skill";
 import { IWilderProps } from "./Wilder";
 
 
-const AddSkillForm = ({wilderId, wilderName, apiSkills}:
+
+const AddSkillForm = ({wilderId, wilderName}:
     {wilderId: IWilderProps['id'],
-    wilderName: IWilderProps['name'],
-    apiSkills: ISkillProps[]}) => {
+    wilderName: IWilderProps['name']}) => {
+    const [apiSkills, setSkills] = useState<ISkillProps[]>([]);
     const [selectedSkill, setSelectedSkill] = useState<ISkillProps['name']>();
     const [rating, setRating] = useState<IGradeProps['rating']>();
+
+    useEffect(() => {
+        const fetchSkills = async () => {
+          const apiSkills = await axios.get('http://localhost:3030/api/skill');
+          setSkills(apiSkills.data);
+          console.log('API SKILLS. = ', apiSkills.data);
+        };
+
+        fetchSkills();
+    }, []);
+
     return (
         <form
             onSubmit={(event) => {

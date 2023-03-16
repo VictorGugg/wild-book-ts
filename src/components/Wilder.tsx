@@ -9,14 +9,13 @@ export interface IWilderProps {
     id: number;
     name: string;
     skills: ISkillProps[];
-    apiSkills: ISkillProps[];
 }
 
 const handleDelete = (id: number) => {
     axios.delete('http://localhost:3030/api/wilder/' + id);
 };
 
-const Wilder = ({ city, id, name, skills, apiSkills }: IWilderProps) => (
+const Wilder = ({ city, id, name, skills }: IWilderProps) => (
     <article className= {styles.card}>
         <img src={blank_profile} alt={`${name}'s Profile`} />
         <h3>{name}</h3>
@@ -32,7 +31,6 @@ const Wilder = ({ city, id, name, skills, apiSkills }: IWilderProps) => (
         <AddSkillForm
         wilderId={id}
         wilderName={name}
-        apiSkills={apiSkills}
         />
     </article>
 );
