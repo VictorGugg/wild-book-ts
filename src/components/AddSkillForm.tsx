@@ -11,7 +11,7 @@ const AddSkillForm = ({wilderId, wilderName}:
     wilderName: IWilderProps['name']}) => {
     const [apiSkills, setSkills] = useState<ISkillProps[]>([]);
     const [selectedSkill, setSelectedSkill] = useState<ISkillProps['name']>();
-    const [rating, setRating] = useState<IGradeProps['rating']>();
+    const [rating, setRating] = useState<IGradeProps['rating']>(5);
 
     useEffect(() => {
         const fetchSkills = async () => {
@@ -53,7 +53,7 @@ const AddSkillForm = ({wilderId, wilderName}:
                 ))}
             </select>
             <br />
-            <label>Grade :
+            <label>Rating (on 10) :
                 <input
                 onChange={(event) => {
                     setRating(parseInt(event.target.value));
